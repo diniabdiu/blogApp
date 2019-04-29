@@ -46,7 +46,7 @@ app.post('/blogs', function(req, res) {
     // Create blog
     var title = req.body.title;
     var image = req.body.image;
-    var body = req.body.body;;
+    var body = req.body.body;
     var inputValues = {title, image, body};
     Blog.create(inputValues, function(err, newBlog) {
         if(err) {
@@ -54,6 +54,15 @@ app.post('/blogs', function(req, res) {
         } else {
             // Then, redirect to the index
             res.redirect('/blogs');
+        }
+    });
+});
+app.get('/blogs/:id', function(req, res) {
+    Blog.findById(req.params.id, function(err, foundBlog) {
+        if(err) {
+            res.redirect('/blogs');
+        } else {
+            res.render('show', {blog: foundBlog});
         }
     });
 });
