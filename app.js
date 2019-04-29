@@ -18,10 +18,16 @@ var blogSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now}
 });
 var Blog = mongoose.model('Blog', blogSchema);
+// Blog.create({
+//     title: 'Text blog',
+//     image: 'https://source.unsplash.com/random',
+//     body: 'this is blog post'
+// });
 // RESTFUL ROUTES
 app.get('/', function(req, res) {
     res.redirect('/blogs')
 });
+
 app.get('/blogs', function(req, res) {
     Blog.find({}, function(err, blogs) {
         if(err){
@@ -30,8 +36,12 @@ app.get('/blogs', function(req, res) {
              res.render('index', {blogs});
         }
     });
-    res.render('index');
 });
+// New route
+app.get('/blogs/new', function(req, res) {
+    res.render('new');
+});
+// Create Route
 
 app.listen(3000, process.env.IP, function(req, res) {
 
