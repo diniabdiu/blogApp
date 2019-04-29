@@ -42,8 +42,22 @@ app.get('/blogs/new', function(req, res) {
     res.render('new');
 });
 // Create Route
-
+app.post('/blogs', function(req, res) {
+    // Create blog
+    var title = req.body.title;
+    var image = req.body.image;
+    var body = req.body.body;;
+    var inputValues = {title, image, body};
+    Blog.create(inputValues, function(err, newBlog) {
+        if(err) {
+            res.render('new');
+        } else {
+            // Then, redirect to the index
+            res.redirect('/blogs');
+        }
+    });
+});
 app.listen(3000, process.env.IP, function(req, res) {
 
-    console.log('test');
+    console.log('test1312');
 });
