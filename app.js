@@ -1,14 +1,16 @@
 // require('dotenv').config();
-var bodyParser = require('body-parser');
-mongoose       = require('mongoose'),
-express        = require('express'),
-app            = express();
+var bodyParser  = require('body-parser'),
+maethodOverride = require('method-override'),
+mongoose        = require('mongoose'),
+express         = require('express'),
+app             = express();
 // const PORT = parseInt(process.env.PORT);
 // App config
 mongoose.connect('mongodb://localhost/restful_blog_app', {useNewUrlParser: true});
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(maethodOverride('_method'));
 
 // Mongoose/model Config
 var blogSchema = new mongoose.Schema({
@@ -63,6 +65,29 @@ app.get('/blogs/:id', function(req, res) {
             res.redirect('/blogs');
         } else {
             res.render('show', {blog: foundBlog});
+        }
+    });
+});
+app.get('/blogs/:id/edit', function(req, res) {
+    Blog.findById(req.params.id, function(err, foundBlog) {
+        if(err) {
+            res.redirect('/blogs');
+        } else {
+            res.render('edit', {blog: foundBlog});
+        }
+    });
+});
+// Update route
+app.put('/blogs/:id', function(req, res) {
+    var title = req.body.title;
+    var image = req.body.image;
+    var body = req.body.body;
+    var inputValues = {title, image, body};
+    Blog.findByIdAndUpdate(req.params.id, inputValues, function(err, updatedBlog) {
+        if(err) {
+            res.redirect('/blogs');
+        } else {
+            res.redirect('/blogs/' + req.params.id);
         }
     });
 });

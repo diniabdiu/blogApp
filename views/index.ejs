@@ -6,6 +6,7 @@
         <span><%= blog.created %></span>
         <p><%= blog.body.substring(0, 100) %>...</p>
         <a href='/blogs/<%= blog._id %>'>Read more</a>
+        <button class="ui violet big basic button"><a href='/blogs/<%= blog._id %>/edit'>Edit Blog</a></button>
     </div>
 <% });%>
 <%include ./partials/footer%>
