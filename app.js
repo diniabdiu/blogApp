@@ -1,6 +1,7 @@
 // require('dotenv').config();
 var bodyParser  = require('body-parser'),
 methodOverride = require('method-override'),
+expressSanitizer = require('express-sanitizer'),
 mongoose        = require('mongoose'),
 express         = require('express'),
 app             = express();
@@ -10,6 +11,7 @@ mongoose.connect('mongodb://localhost/restful_blog_app', {useNewUrlParser: true}
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(expressSanitizer());
 app.use(methodOverride('_method'));
 app.use(methodOverride('X-HTTP-Method-Override'));
 
@@ -51,6 +53,7 @@ app.post('/blogs', function(req, res) {
     var image = req.body.image;
     var body = req.body.body;
     var inputValues = {title, image, body};
+    console.log(req.body);
     Blog.create(inputValues, function(err, newBlog) {
         if(err) {
             res.render('new');
@@ -80,10 +83,7 @@ app.get('/blogs/:id/edit', function(req, res) {
 });
 // Delete blog
 app.post('/blogs/:id/delete', function(req, res) {
-    const { id } = req.params;
-    console.log(id);
-
-    Blog.findByIdAndDelete(id, function(err, deleteBlog) {
+    Blog.findByIdAndDelete(req.params.id, function(err, deleteBlog) {
         if(err) {
             res.redirect('/blogs');
         }else {

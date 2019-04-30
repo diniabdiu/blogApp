@@ -12,4 +12,6 @@ img {
 body {
     padding:150px 100px;
 }
-
+#delete {
+    display: inline;
+}
