@@ -6,10 +6,10 @@
     <div class="ui top attached ">
         <div class="item">
             <img class="ui centered rounded image" src="<%=blog.image%>">
-            <div class="content" style="padding:15px 0 22px 0;">
+            <div class="content paddingCont">
                 <span><%= blog.created.toDateString()%></span>
             </div>
-            <div class="description" style="padding: 15px 0;">
+            <div class="description paddingDes">
                 <p><%= blog.body %></p>
             </div>
             <div> 
@@ -18,7 +18,7 @@
             <form action="/blogs/<%=blog.id%>/delete" method="post" id="delete">
                 <button type="submit" name="_method" value="DELETE"  class="ui red big basic button">Delete Blog</button>
             </form>
-            <a class="ui lightblue big basic button" style="float: right;" href="/blogs">Go Back</a>
+            <a class="ui lightblue big basic button goback" href="/blogs">Go Back</a>
             </div>
         </div>
     </div>
