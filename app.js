@@ -1,6 +1,6 @@
 // require('dotenv').config();
 var bodyParser  = require('body-parser'),
-maethodOverride = require('method-override'),
+methodOverride = require('method-override'),
 mongoose        = require('mongoose'),
 express         = require('express'),
 app             = express();
@@ -10,7 +10,8 @@ mongoose.connect('mongodb://localhost/restful_blog_app', {useNewUrlParser: true}
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(maethodOverride('_method'));
+app.use(methodOverride('_method'));
+app.use(methodOverride('X-HTTP-Method-Override'));
 
 // Mongoose/model Config
 var blogSchema = new mongoose.Schema({
@@ -77,6 +78,20 @@ app.get('/blogs/:id/edit', function(req, res) {
         }
     });
 });
+// Delete blog
+app.post('/blogs/:id/delete', function(req, res) {
+    const { id } = req.params;
+    console.log(id);
+
+    Blog.findByIdAndDelete(id, function(err, deleteBlog) {
+        if(err) {
+            res.redirect('/blogs');
+        }else {
+            res.redirect('/blogs');
+        }
+    });
+});
+
 // Update route
 app.put('/blogs/:id', function(req, res) {
     var title = req.body.title;
@@ -91,7 +106,8 @@ app.put('/blogs/:id', function(req, res) {
         }
     });
 });
-app.listen(3000, process.env.IP, function(req, res) {
 
-    console.log('test1312');
+
+app.listen(3000, process.env.IP, function(req, res) {
+    console.log("Server started at port 3000!");
 });
